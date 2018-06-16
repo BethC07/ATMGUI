@@ -16,17 +16,38 @@ public class Account {
         
     }
     
-    public void Withdraw(String accountName) {
+    public float Withdraw(String accountName, float withdraw) {
         this.account = accountName;
+        if(this.account == "Savings") {
+            accountBalance = savingsAccount - withdraw;
+        }
+        else if(this.account == "Checking") {
+            accountBalance = checkingAccount - withdraw;
+        }
+        return accountBalance;
     }
     
-    public void Deposit(String accountName) {
+    public float Deposit(String accountName, float deposit) {
         this.account = accountName;
-        
+        if(this.account == "Savings") {
+            accountBalance = savingsAccount + deposit;
+        }
+        else if(this.account == "Checking") {
+            accountBalance = checkingAccount + deposit;
+        }
+        return accountBalance;
     }
     
-    public void Transfer(String accountName) {
+    public void Transfer(String accountName, float transferFund) {
         this.account = accountName;
+        if(this.account == "Savings") {
+            savingsAccount = savingsAccount - transferFund;
+            checkingAccount = checkingAccount + transferFund;
+        }
+        else if(this.account == "Checking") {
+            checkingAccount = checkingAccount - transferFund;
+            savingsAccount = savingsAccount + transferFund;
+        }
     }
     
     public void Balance(String accountName) {
@@ -37,3 +58,4 @@ public class Account {
         
     }
 }
+
