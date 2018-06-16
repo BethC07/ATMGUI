@@ -55,7 +55,11 @@ public class ATMGUI extends JFrame {
         
         // Setting the JRadioButton variables
         checking = new JRadioButton("Checking");
+        checking.setActionCommand("Checking");
+        checking.addActionListener(this);
         savings = new JRadioButton("Savings");
+        savings.setActionCommand("Savings");
+        savings.addActionListener(this);
         
         // calculateWithdraw actionListener
         calculateWithdraw.addActionListener(new ActionListener() {
@@ -176,11 +180,10 @@ public class ATMGUI extends JFrame {
 
  public static void main(String[] args) {
      
-    Account checkingAccount = new Account();
-    Account savingsAccount = new Account();
+    Account checkingAccount = new Account("account");
+    Account savingsAccount = new Account("account");
     
     new ATMGUI();
      
  }
 }
-
