@@ -11,36 +11,36 @@ public class Account {
     float savingsAccount = 8000;
     float checkingAccount = 2000;
     float accountBalance = 0;
+    int withdrawsMade = 0;
     
     public Account(String accountName) {
-        
+        this.account = accountName;
     }
     
     public float Withdraw(String accountName, float withdraw) {
-        this.account = accountName;
-        if(this.account == "Savings") {
+        if(account == "Savings") {
             accountBalance = savingsAccount - withdraw;
+            withdrawsMade++;
         }
-        else if(this.account == "Checking") {
+        else if(account == "Checking") {
             accountBalance = checkingAccount - withdraw;
+            withdrawsMade++;
         }
         return accountBalance;
     }
     
     public float Deposit(String accountName, float deposit) {
-        this.account = accountName;
-        if(this.account == "Savings") {
+        if(account == "Savings") {
             accountBalance = savingsAccount + deposit;
         }
-        else if(this.account == "Checking") {
+        else if(account == "Checking") {
             accountBalance = checkingAccount + deposit;
         }
         return accountBalance;
     }
     
     public void Transfer(String accountName, float transferFund) {
-        this.account = accountName;
-        if(this.account == "Savings") {
+        if(account == "Savings") {
             savingsAccount = savingsAccount - transferFund;
             checkingAccount = checkingAccount + transferFund;
         }
@@ -50,12 +50,19 @@ public class Account {
         }
     }
     
-    public void Balance(String accountName) {
-        this.account = accountName;
+    public float Balance(String accountName) {
+        if(account == "Savings") {
+            accountBalance = savingsAccount;
+        }
+        else if(account == "Checking") {
+            accountBalance = checkingAccount;
+        }
+        return accountBalance;
     }
     
-    public void serviceCharge() {
-        
+    public void serviceCharge(float withdraw) {
+        if(withdrawsMade > 4) {
+            withdraw += 1.50;
+        }
     }
 }
-
