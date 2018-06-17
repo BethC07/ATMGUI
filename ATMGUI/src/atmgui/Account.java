@@ -8,61 +8,40 @@ package atmgui;
 
 public class Account {
     String account = "";
-    double savingsAccount = 8000;
-    double checkingAccount = 2000;
     double accountBalance = 0;
     int withdrawsMade = 0;
     
     public Account(String accountName) {
         this.account = accountName;
-    }
-    
-    public double Withdraw(String accountName, double withdraw) {
-        if(account == "Savings") {
-            accountBalance = savingsAccount - withdraw;
-            withdrawsMade++;
+        
+        if(this.account == "Savings") {
+            this.accountBalance = 8000;
         }
-        else if(account == "Checking") {
-            accountBalance = checkingAccount - withdraw;
-            withdrawsMade++;
-        }
-        return accountBalance;
-    }
-    
-    public double Deposit(String accountName, double deposit) {
-        if(account == "Savings") {
-            accountBalance = savingsAccount + deposit;
-        }
-        else if(account == "Checking") {
-            accountBalance = checkingAccount + deposit;
-        }
-        return accountBalance;
-    }
-    
-    public void Transfer(String accountName, double transferFund) {
-        if(account == "Savings") {
-            savingsAccount = savingsAccount - transferFund;
-            checkingAccount = checkingAccount + transferFund;
-        }
-        else if(this.account == "Checking") {
-            checkingAccount = checkingAccount - transferFund;
-            savingsAccount = savingsAccount + transferFund;
+        else {
+            this.accountBalance = 2000;
         }
     }
     
-    public double Balance(String accountName) {
-        if(account == "Savings") {
-            accountBalance = savingsAccount;
-        }
-        else if(account == "Checking") {
-            accountBalance = checkingAccount;
-        }
-        return accountBalance;
-    }
-    
-    public void serviceCharge(float withdraw) {
+    public void Withdraw(double withdraw) {
         if(withdrawsMade > 4) {
             withdraw += 1.50;
         }
+        else {
+            withdrawsMade++;
+        }
+        accountBalance = accountBalance - withdraw;
+    }
+    
+    public void Deposit(double deposit) {
+        accountBalance = accountBalance + deposit;
+    }
+    
+    public void Transfer(double transferFund, Account toAccount) {
+        accountBalance = accountBalance - transferFund;
+        toAccount.accountBalance = toAccount.accountBalance + transferFund;
+    }
+    
+    public double Balance() {
+        return accountBalance;
     }
 }
