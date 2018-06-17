@@ -21,7 +21,7 @@ public class ATMGUI extends JPanel {
     public JTextField money;
     // JButton is exactly that, a button
     // It can actually do something if it has a ActionListener
-    public JButton calculateWithdraw, calculateDesposit, 
+    public JButton calculateWithdraw, calculateDeposit, 
             calculateTransfer, calculateBalance;
     public JRadioButton checking, savings;
     private final int WINDOW_WIDTH = 300;
@@ -51,7 +51,7 @@ public class ATMGUI extends JPanel {
         // Setting the JButton variable
         calculateWithdraw = new JButton("Withdraw");
         calculateTransfer = new JButton("Transfer To");
-        calculateDesposit = new JButton("Deposit");
+        calculateDeposit = new JButton("Deposit");
         calculateBalance = new JButton("Balance");
         
         // Setting the JTextField variables
@@ -153,6 +153,35 @@ public class ATMGUI extends JPanel {
                 if(checkIfInteger(moneyString) == true) {
                     moneyInteger = Integer.parseInt(moneyString);
                     
+                    try {
+                        Account fromAccount = null;
+                        Account toAccount = null;
+                        
+                        if(account == "Savings") {
+                        fromAccount = savingsAccount;
+                        toAccount = checkingAccount;
+                        }
+                        else if(account == "Checking") {
+                            fromAccount = checkingAccount;
+                            toAccount = savingsAccount;
+                        }
+                        
+                        balance = fromAccount.Balance();
+                        
+                        if (balance < moneyInteger) {
+                            throw new InsufficientFunds("You do not have enough money to withdraw that amount.");
+                        }
+                        else {
+                            
+                            fromAccount.Transfer(moneyInteger, toAccount);
+                            JOptionPane.showMessageDialog(null, "Transfer was successful.");
+                        }
+                        
+                    }
+                    catch(InsufficientFunds ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+                    
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Value provided was not "
@@ -162,7 +191,7 @@ public class ATMGUI extends JPanel {
         });
         
         // calculateDesposit actionListener
-        calculateDesposit.addActionListener(new ActionListener() {
+        calculateDeposit.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -214,13 +243,13 @@ public class ATMGUI extends JPanel {
         
         calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
         calculateTransfer.setAlignmentX(LEFT_ALIGNMENT);
-        calculateDesposit.setAlignmentX(RIGHT_ALIGNMENT);
+        calculateDeposit.setAlignmentX(RIGHT_ALIGNMENT);
         calculateBalance.setAlignmentX(RIGHT_ALIGNMENT);
         
         // Adding all the JLable and JTextField variables to the box
         panel.add(calculateWithdraw);
         panel.add(calculateTransfer);
-        panel.add(calculateDesposit);
+        panel.add(calculateDeposit);
         panel.add(calculateBalance);
         panel.add(checking);
         panel.add(savings);
@@ -241,5 +270,5 @@ public class ATMGUI extends JPanel {
      
 	 new ATMGUI();
 
-}
+    }   
 }
