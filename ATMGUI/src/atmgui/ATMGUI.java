@@ -231,38 +231,43 @@ public class ATMGUI extends JPanel {
             }
         });
         
+        JPanel panel = new JPanel();
+        BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        panel.setLayout(layout);
+        
         JPanel panel1 = new JPanel();
         BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.X_AXIS);
         panel1.setLayout(layout1);
         //calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
         //calculateTransfer.setAlignmentX(RIGHT_ALIGNMENT);
         panel1.add(calculateWithdraw);
-        panel1.add(calculateTransfer);
+        panel1.add(calculateDeposit);
 
         JPanel panel2 = new JPanel();
         BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.X_AXIS);
         panel2.setLayout(layout2);
         //calculateDeposit.setAlignmentX(LEFT_ALIGNMENT);
         //calculateBalance.setAlignmentX(RIGHT_ALIGNMENT);
-        panel2.add(calculateDeposit);
+        panel2.add(calculateTransfer);
         panel2.add(calculateBalance);
         
         JPanel panel3 = new JPanel();
-        BoxLayout layout3 = new BoxLayout(panel3, BoxLayout.Y_AXIS);
+        BoxLayout layout3 = new BoxLayout(panel3, BoxLayout.X_AXIS);
         panel3.setLayout(layout3);
         panel3.add(checking);
         panel3.add(savings);
         
-        //JPanel panel4 = new JPanel();
-        //BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.Y_AXIS);
-        //panel4.setLayout(layout4);
-        panel3.add(money);
+        JPanel panel4 = new JPanel();
+        BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.X_AXIS);
+        panel4.setLayout(layout4);
+        panel4.add(money);
         
-        frame.setLayout(new FlowLayout());
-        frame.add(panel1);
-        frame.add(panel2);
-        frame.add(panel3);
-        //frame.add(panel4);
+        //panel.setLayout(new FlowLayout());
+        panel.add(panel1);
+        panel.add(panel2);
+        panel.add(panel3);
+        panel.add(panel4);
+        frame.add(panel);
         
         // Exiting the program once "X" button on the window is pressed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
