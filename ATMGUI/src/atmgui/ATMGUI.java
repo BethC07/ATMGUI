@@ -9,14 +9,14 @@ package atmgui;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.Component;
+import java.awt.FlowLayout;
 
 public class ATMGUI extends JPanel {
 
     // First, I initiate all the JFrame variables I need to make my GUI work
     // JFrame is the box that will appear
     public JFrame frame;
-    // JPanel is a container to group components together
-    public JPanel panel;
     // JTextField is an inputable field that can be editied
     public JTextField money;
     // JButton is exactly that, a button
@@ -24,8 +24,8 @@ public class ATMGUI extends JPanel {
     public JButton calculateWithdraw, calculateDeposit, 
             calculateTransfer, calculateBalance;
     public JRadioButton checking, savings;
-    private final int WINDOW_WIDTH = 300;
-    private final int WINDOW_HEIGHT = 180;
+    private final int WINDOW_WIDTH = 400;
+    private final int WINDOW_HEIGHT = 400;
     public String account = "Checking";
     private double balance;
     Account checkingAccount = new Account("Checking");
@@ -33,16 +33,9 @@ public class ATMGUI extends JPanel {
     
     public ATMGUI() {
         super(new BorderLayout());
-        // Setting the width and hight of the box
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
         // Calling the createPanel class to create the components in the box
         createPanel();
-        // Exiting the program once "X" button on the window is pressed
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Adding the JPanel varible to the box
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
     }
     
     private void createPanel() {      
@@ -238,22 +231,46 @@ public class ATMGUI extends JPanel {
             }
         });
         
-        panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        JPanel panel1 = new JPanel();
+        BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.X_AXIS);
+        panel1.setLayout(layout1);
+        //calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
+        //calculateTransfer.setAlignmentX(RIGHT_ALIGNMENT);
+        panel1.add(calculateWithdraw);
+        panel1.add(calculateTransfer);
+
+        JPanel panel2 = new JPanel();
+        BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.X_AXIS);
+        panel2.setLayout(layout2);
+        //calculateDeposit.setAlignmentX(LEFT_ALIGNMENT);
+        //calculateBalance.setAlignmentX(RIGHT_ALIGNMENT);
+        panel2.add(calculateDeposit);
+        panel2.add(calculateBalance);
         
-        calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
-        calculateTransfer.setAlignmentX(LEFT_ALIGNMENT);
-        calculateDeposit.setAlignmentX(RIGHT_ALIGNMENT);
-        calculateBalance.setAlignmentX(RIGHT_ALIGNMENT);
+        JPanel panel3 = new JPanel();
+        BoxLayout layout3 = new BoxLayout(panel3, BoxLayout.Y_AXIS);
+        panel3.setLayout(layout3);
+        panel3.add(checking);
+        panel3.add(savings);
         
-        // Adding all the JLable and JTextField variables to the box
-        panel.add(calculateWithdraw);
-        panel.add(calculateTransfer);
-        panel.add(calculateDeposit);
-        panel.add(calculateBalance);
-        panel.add(checking);
-        panel.add(savings);
-        panel.add(money);
+        //JPanel panel4 = new JPanel();
+        //BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.Y_AXIS);
+        //panel4.setLayout(layout4);
+        panel3.add(money);
+        
+        frame.setLayout(new FlowLayout());
+        frame.add(panel1);
+        frame.add(panel2);
+        frame.add(panel3);
+        //frame.add(panel4);
+        
+        // Exiting the program once "X" button on the window is pressed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Setting the width and hight of the box
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        frame.pack();
+        frame.setVisible(true);
+        
     }
     
     public boolean checkIfInteger(String money) {
