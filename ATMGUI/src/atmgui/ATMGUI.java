@@ -9,8 +9,6 @@ package atmgui;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.Component;
-import java.awt.FlowLayout;
 
 public class ATMGUI extends JPanel {
 
@@ -24,8 +22,8 @@ public class ATMGUI extends JPanel {
     public JButton calculateWithdraw, calculateDeposit, 
             calculateTransfer, calculateBalance;
     public JRadioButton checking, savings;
-    private final int WINDOW_WIDTH = 400;
-    private final int WINDOW_HEIGHT = 400;
+    private final int WINDOW_WIDTH = 350;
+    private final int WINDOW_HEIGHT = 200;
     public String account = "Checking";
     private double balance;
     Account checkingAccount = new Account("Checking");
@@ -40,7 +38,8 @@ public class ATMGUI extends JPanel {
     
     private void createPanel() {      
         frame = new JFrame("ATM Machine");
-        
+        // Setting the width and hight of the box
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         // Setting the JButton variable
         calculateWithdraw = new JButton("Withdraw");
         calculateTransfer = new JButton("Transfer To");
@@ -49,7 +48,7 @@ public class ATMGUI extends JPanel {
         
         // Setting the JTextField variables
         money = new JTextField(20);
-        
+        money.setMaximumSize(money.getPreferredSize());
         // Setting the JRadioButton variables
         checking = new JRadioButton("Checking");
         checking.setActionCommand("Checking");
@@ -79,7 +78,6 @@ public class ATMGUI extends JPanel {
         ButtonGroup radioGroup = new ButtonGroup();
         radioGroup.add(checking);
         radioGroup.add(savings);
-        
         
         // calculateWithdraw actionListener
         calculateWithdraw.addActionListener(new ActionListener() {
@@ -235,21 +233,45 @@ public class ATMGUI extends JPanel {
         BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         panel.setLayout(layout);
         
-        JPanel panel1 = new JPanel();
-        BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.X_AXIS);
-        panel1.setLayout(layout1);
-        //calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
-        //calculateTransfer.setAlignmentX(RIGHT_ALIGNMENT);
-        panel1.add(calculateWithdraw);
-        panel1.add(calculateDeposit);
+        JPanel Xpanel1 = new JPanel();
+        BoxLayout layout1 = new BoxLayout(Xpanel1, BoxLayout.X_AXIS);
+        Xpanel1.setLayout(layout1);
+        
+        JPanel widthPanel = new JPanel();
+        BoxLayout widthLayout = new BoxLayout(widthPanel, BoxLayout.X_AXIS);
+        widthPanel.setLayout(widthLayout);
+        widthPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        calculateWithdraw.setAlignmentX(Component.CENTER_ALIGNMENT);
+        widthPanel.add(calculateWithdraw);
+        Xpanel1.add(widthPanel);
+        
+        JPanel depositPanel = new JPanel();
+        BoxLayout depositLayout = new BoxLayout(depositPanel, BoxLayout.X_AXIS);
+        depositPanel.setLayout(depositLayout);
+        depositPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        calculateDeposit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        depositPanel.add(calculateDeposit);
+        Xpanel1.add(depositPanel);
 
-        JPanel panel2 = new JPanel();
-        BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.X_AXIS);
-        panel2.setLayout(layout2);
-        //calculateDeposit.setAlignmentX(LEFT_ALIGNMENT);
-        //calculateBalance.setAlignmentX(RIGHT_ALIGNMENT);
-        panel2.add(calculateTransfer);
-        panel2.add(calculateBalance);
+        JPanel Xpanel2 = new JPanel();
+        BoxLayout layout2 = new BoxLayout(Xpanel2, BoxLayout.X_AXIS);
+        Xpanel2.setLayout(layout2);
+        
+        JPanel transPanel = new JPanel();
+        BoxLayout transLayout = new BoxLayout(transPanel, BoxLayout.X_AXIS);
+        transPanel.setLayout(transLayout);
+        transPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        calculateTransfer.setAlignmentX(Component.CENTER_ALIGNMENT);
+        transPanel.add(calculateTransfer);
+        Xpanel2.add(transPanel);
+        
+        JPanel balancePanel = new JPanel();
+        BoxLayout balanceLayout = new BoxLayout(balancePanel, BoxLayout.X_AXIS);
+        balancePanel.setLayout(balanceLayout);
+        balancePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        calculateBalance.setAlignmentX(Component.CENTER_ALIGNMENT);
+        balancePanel.add(calculateBalance);
+        Xpanel2.add(balancePanel);
         
         JPanel panel3 = new JPanel();
         BoxLayout layout3 = new BoxLayout(panel3, BoxLayout.X_AXIS);
@@ -258,22 +280,19 @@ public class ATMGUI extends JPanel {
         panel3.add(savings);
         
         JPanel panel4 = new JPanel();
-        BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.X_AXIS);
+        BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.Y_AXIS);
+        money.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel4.setLayout(layout4);
         panel4.add(money);
         
-        //panel.setLayout(new FlowLayout());
-        panel.add(panel1);
-        panel.add(panel2);
+        panel.add(Xpanel1);
+        panel.add(Xpanel2);
         panel.add(panel3);
         panel.add(panel4);
         frame.add(panel);
         
         // Exiting the program once "X" button on the window is pressed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Setting the width and hight of the box
-        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        frame.pack();
         frame.setVisible(true);
         
     }
