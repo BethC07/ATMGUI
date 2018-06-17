@@ -26,7 +26,7 @@ public class ATMGUI extends JPanel {
     public JRadioButton checking, savings;
     private final int WINDOW_WIDTH = 300;
     private final int WINDOW_HEIGHT = 180;
-    public String account;
+    public String account = "Checking";
     private double balance;
     Account checkingAccount = new Account("Checking");
     Account savingsAccount = new Account("Savings");
@@ -173,16 +173,17 @@ public class ATMGUI extends JPanel {
                 if(checkIfInteger(moneyString) == true) {
                     moneyInteger = Integer.parseInt(moneyString);
                     
+                    Account currentAccount = null;
+                            
                     if(account == "Checking") {
-                    balance = checkingAccount.Balance();
-                    checkingAccount.Deposit(moneyInteger);
+                        currentAccount = checkingAccount;
                     }
                     else if(account == "Savings") {
-
-                        balance = savingsAccount.Balance();
-                        savingsAccount.Deposit(moneyInteger);
+                        currentAccount = savingsAccount;
                     }
                     
+                    currentAccount.Deposit(moneyInteger);
+                    JOptionPane.showMessageDialog(null, "Deposit was successful.");
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Value provided was not "
