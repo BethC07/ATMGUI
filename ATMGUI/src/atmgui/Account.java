@@ -8,16 +8,16 @@ package atmgui;
 
 public class Account {
     String account = "";
-    float savingsAccount = 8000;
-    float checkingAccount = 2000;
-    float accountBalance = 0;
+    double savingsAccount = 8000;
+    double checkingAccount = 2000;
+    double accountBalance = 0;
     int withdrawsMade = 0;
     
     public Account(String accountName) {
         this.account = accountName;
     }
     
-    public float Withdraw(String accountName, float withdraw) {
+    public double Withdraw(String accountName, double withdraw) {
         if(account == "Savings") {
             accountBalance = savingsAccount - withdraw;
             withdrawsMade++;
@@ -29,7 +29,7 @@ public class Account {
         return accountBalance;
     }
     
-    public float Deposit(String accountName, float deposit) {
+    public double Deposit(String accountName, double deposit) {
         if(account == "Savings") {
             accountBalance = savingsAccount + deposit;
         }
@@ -39,7 +39,7 @@ public class Account {
         return accountBalance;
     }
     
-    public void Transfer(String accountName, float transferFund) {
+    public void Transfer(String accountName, double transferFund) {
         if(account == "Savings") {
             savingsAccount = savingsAccount - transferFund;
             checkingAccount = checkingAccount + transferFund;
@@ -50,7 +50,7 @@ public class Account {
         }
     }
     
-    public float Balance(String accountName) {
+    public double Balance(String accountName) {
         if(account == "Savings") {
             accountBalance = savingsAccount;
         }
