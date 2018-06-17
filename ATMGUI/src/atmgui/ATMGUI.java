@@ -34,14 +34,14 @@ public class ATMGUI extends JPanel {
         super(new BorderLayout());
         // Setting the width and hight of the box
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        // Exiting the program once "X" button on the window is pressed
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Calling the createPanel class to create the components in the box
         createPanel();
+        // Exiting the program once "X" button on the window is pressed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Adding the JPanel varible to the box
-        add(panel);
-
-        setVisible(true);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
     }
     
     private void createPanel() {      
@@ -182,9 +182,9 @@ public class ATMGUI extends JPanel {
                 
             }
         });
-        
-        frame.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        
         calculateWithdraw.setAlignmentX(LEFT_ALIGNMENT);
         calculateTransfer.setAlignmentX(LEFT_ALIGNMENT);
         calculateDesposit.setAlignmentX(RIGHT_ALIGNMENT);
@@ -212,12 +212,10 @@ public class ATMGUI extends JPanel {
 
  public static void main(String[] args) {
      
+	 new ATMGUI();
+	 
     /*Account checkingAccount = new Account("Checking");
     Account savingsAccount = new Account("Savings");*/
-    
-    new ATMGUI();
-     
- }
+
 }
-
-
+}
