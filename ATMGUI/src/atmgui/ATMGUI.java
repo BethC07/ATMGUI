@@ -12,34 +12,41 @@ import java.awt.event.*;
 
 public class ATMGUI extends JPanel {
 
-    // First, I initiate all the JFrame variables I need to make my GUI work
-    // JFrame is the box that will appear
-    public JFrame frame;
-    // JTextField is an inputable field that can be editied
-    public JTextField money;
-    // JButton is exactly that, a button
-    // It can actually do something if it has a ActionListener
-    public JButton calculateWithdraw, calculateDeposit, 
+    // Initialize JFrame
+    private JFrame frame;
+    // Initialize JTextField
+    private JTextField money;
+    // Initialize JButtons
+    private JButton calculateWithdraw, calculateDeposit, 
             calculateTransfer, calculateBalance;
-    public JRadioButton checking, savings;
-    private final int WINDOW_WIDTH = 350;
-    private final int WINDOW_HEIGHT = 200;
-    public String account = "Checking";
+    // Initialize JRadioButtons
+    private JRadioButton checking, savings;
+    private final int WINDOW_WIDTH = 400;
+    private final int WINDOW_HEIGHT = 400;
+    // Initialize variables used within the ATMGUI methods
+    // accounts sets the radio button checking to be selected
+    // as soon as the GUI is called
+    private String account = "Checking";
+    // balance will hold the accounts current balance
+    // for checking and viewing purposes
     private double balance;
+    // Initializing objects of the Account class for
+    // the checkings account and the savings account
     Account checkingAccount = new Account("Checking");
     Account savingsAccount = new Account("Savings");
     
+    // The ATMGUI() method will create the GUI showed to the user
     public ATMGUI() {
         super(new BorderLayout());
-        
         // Calling the createPanel class to create the components in the box
         createPanel();
     }
     
+    // The createPanel() method creates everything inside the GUI
+    // along with all the checks for the accounts
     private void createPanel() {      
         frame = new JFrame("ATM Machine");
-        // Setting the width and hight of the box
-        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
         // Setting the JButton variable
         calculateWithdraw = new JButton("Withdraw");
         calculateTransfer = new JButton("Transfer To");
@@ -47,12 +54,15 @@ public class ATMGUI extends JPanel {
         calculateBalance = new JButton("Balance");
         
         // Setting the JTextField variables
-        money = new JTextField(20);
-        money.setMaximumSize(money.getPreferredSize());
+        money = new JTextField(16);
+        
         // Setting the JRadioButton variables
         checking = new JRadioButton("Checking");
         checking.setActionCommand("Checking");
         checking.setSelected(true);
+        // Creation of ActionListener for the checking radio button
+        // that sets the account string variable to equal checking
+        // for determining which account is selected
         checking.addActionListener(new ActionListener() {
             
             @Override
@@ -74,10 +84,12 @@ public class ATMGUI extends JPanel {
             }
         });
         
-        // Group buttons
+        // Group the radio buttons together to prevent
+        // both buttons being pressed at once
         ButtonGroup radioGroup = new ButtonGroup();
         radioGroup.add(checking);
         radioGroup.add(savings);
+        
         
         // calculateWithdraw actionListener
         calculateWithdraw.addActionListener(new ActionListener() {
@@ -88,14 +100,23 @@ public class ATMGUI extends JPanel {
                 double moneyInteger;
 
                 moneyString = money.getText();
+                // Calls the checkIfInteger() method to see if text
+                // or nothing was entered to catch the error
                 if(checkIfInteger(moneyString) == true) {
                     moneyInteger = Integer.parseInt(moneyString);
 
+                    // Checking to see if the money value inputed is divisible
+                    // by 20 using a mod to tell if the remainder of the value
+                    // divided by 20 is 0, which means it's a interval of 20
                     if(moneyInteger % 20 == 0)
                     {
                         try {
+                            // Initialize a null account object to set later
                             Account currentAccount = null;
                             
+                            // Setting the currentAccount object to checkings
+                            // and/or savngs depending on the account value
+                            // from the radio button
                             if(account == "Checking") {
                                 currentAccount = checkingAccount;
                             }
@@ -103,26 +124,36 @@ public class ATMGUI extends JPanel {
                                 currentAccount = savingsAccount;
                             }
                             
+                            // Computing the balalnce to check and see if the user
+                            // has enough funds BEFORE making the withdraw
                             balance = currentAccount.Balance();
                             
+                            // If the blance is less than the moeny they are trying
+                            // to withdraw, it will throw and error from InsufficientFunds
+                            // to tell the user they do not have enough money to make the withdraw
                             if (balance < moneyInteger) {
                                throw new InsufficientFunds("You do not have enough money to withdraw that amount."); 
                             }
+                            // If enough money is found, make the wtihfraw and
+                            // show the user the withdraw was successful
                             else {
                                 currentAccount.Withdraw(moneyInteger);
                                 JOptionPane.showMessageDialog(null, "Withdraw was successful.");
                             }  
                         }
+                        // Catch for InsufficientFunds
                         catch (InsufficientFunds ex) {
                             JOptionPane.showMessageDialog(null, ex);
                         }
                     }
+                    // Catch for a non increment of 20
                     else
                     {
                         JOptionPane.showMessageDialog(null, "Value is not an "
                                 + "increment of 20, please enter a new value.");
                     }
                 }
+                // Catch for a non integer value
                 else
                 {
                     JOptionPane.showMessageDialog(null, "Value provided was not "
@@ -145,6 +176,8 @@ public class ATMGUI extends JPanel {
                     moneyInteger = Integer.parseInt(moneyString);
                     
                     try {
+                        // Create two null Account objects to store
+                        // the account selected and the one not selected
                         Account fromAccount = null;
                         Account toAccount = null;
                         
@@ -157,11 +190,15 @@ public class ATMGUI extends JPanel {
                             toAccount = savingsAccount;
                         }
                         
+                        // Check the balalnce before making the transfer
                         balance = fromAccount.Balance();
-                        
+                        // Throw InsufficientFunds error if balance is less than
+                        // the value inputed
                         if (balance < moneyInteger) {
                             throw new InsufficientFunds("You do not have enough money to withdraw that amount.");
                         }
+                        // If everything checks out, make the transfer
+                        // and tell the user the transfer was completed
                         else {
                             
                             fromAccount.Transfer(moneyInteger, toAccount);
@@ -169,11 +206,13 @@ public class ATMGUI extends JPanel {
                         }
                         
                     }
+                    // Catch for InsufficientFunds
                     catch(InsufficientFunds ex) {
                         JOptionPane.showMessageDialog(null, ex);
                     }
                     
                 }
+                // Catch for a non integer value
                 else {
                     JOptionPane.showMessageDialog(null, "Value provided was not "
                             + "an integer, please enter a new value.");
@@ -194,7 +233,8 @@ public class ATMGUI extends JPanel {
                     moneyInteger = Integer.parseInt(moneyString);
                     
                     Account currentAccount = null;
-                            
+                    
+                    // Insure the correct account is selected
                     if(account == "Checking") {
                         currentAccount = checkingAccount;
                     }
@@ -202,6 +242,8 @@ public class ATMGUI extends JPanel {
                         currentAccount = savingsAccount;
                     }
                     
+                    // Deposit the money value to the correct account
+                    // and tell the user it was successful
                     currentAccount.Deposit(moneyInteger);
                     JOptionPane.showMessageDialog(null, "Deposit was successful.");
                 }
@@ -233,45 +275,19 @@ public class ATMGUI extends JPanel {
         BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         panel.setLayout(layout);
         
-        JPanel Xpanel1 = new JPanel();
-        BoxLayout layout1 = new BoxLayout(Xpanel1, BoxLayout.X_AXIS);
-        Xpanel1.setLayout(layout1);
-        
-        JPanel widthPanel = new JPanel();
-        BoxLayout widthLayout = new BoxLayout(widthPanel, BoxLayout.X_AXIS);
-        widthPanel.setLayout(widthLayout);
-        widthPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        calculateWithdraw.setAlignmentX(Component.CENTER_ALIGNMENT);
-        widthPanel.add(calculateWithdraw);
-        Xpanel1.add(widthPanel);
-        
-        JPanel depositPanel = new JPanel();
-        BoxLayout depositLayout = new BoxLayout(depositPanel, BoxLayout.X_AXIS);
-        depositPanel.setLayout(depositLayout);
-        depositPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        calculateDeposit.setAlignmentX(Component.CENTER_ALIGNMENT);
-        depositPanel.add(calculateDeposit);
-        Xpanel1.add(depositPanel);
+        JPanel panel1 = new JPanel();
+        BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.X_AXIS);
+        panel1.setLayout(layout1);
+        panel1.add(calculateWithdraw);
+        panel1.add(Box.createRigidArea(new Dimension(5,0)));
+        panel1.add(calculateDeposit);
 
-        JPanel Xpanel2 = new JPanel();
-        BoxLayout layout2 = new BoxLayout(Xpanel2, BoxLayout.X_AXIS);
-        Xpanel2.setLayout(layout2);
-        
-        JPanel transPanel = new JPanel();
-        BoxLayout transLayout = new BoxLayout(transPanel, BoxLayout.X_AXIS);
-        transPanel.setLayout(transLayout);
-        transPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        calculateTransfer.setAlignmentX(Component.CENTER_ALIGNMENT);
-        transPanel.add(calculateTransfer);
-        Xpanel2.add(transPanel);
-        
-        JPanel balancePanel = new JPanel();
-        BoxLayout balanceLayout = new BoxLayout(balancePanel, BoxLayout.X_AXIS);
-        balancePanel.setLayout(balanceLayout);
-        balancePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        calculateBalance.setAlignmentX(Component.CENTER_ALIGNMENT);
-        balancePanel.add(calculateBalance);
-        Xpanel2.add(balancePanel);
+        JPanel panel2 = new JPanel();
+        BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.X_AXIS);
+        panel2.setLayout(layout2);
+        panel2.add(calculateTransfer);
+        panel2.add(Box.createRigidArea(new Dimension(5,0)));
+        panel2.add(calculateBalance);
         
         JPanel panel3 = new JPanel();
         BoxLayout layout3 = new BoxLayout(panel3, BoxLayout.X_AXIS);
@@ -280,21 +296,22 @@ public class ATMGUI extends JPanel {
         panel3.add(savings);
         
         JPanel panel4 = new JPanel();
-        BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.Y_AXIS);
-        money.setAlignmentX(Component.CENTER_ALIGNMENT);
+        BoxLayout layout4 = new BoxLayout(panel4, BoxLayout.X_AXIS);
         panel4.setLayout(layout4);
         panel4.add(money);
         
-        panel.add(Xpanel1);
-        panel.add(Xpanel2);
+        panel.add(panel1);
+        panel.add(panel2);
         panel.add(panel3);
         panel.add(panel4);
         frame.add(panel);
         
         // Exiting the program once "X" button on the window is pressed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Setting the width and hight of the box
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        frame.pack();
         frame.setVisible(true);
-        
     }
     
     public boolean checkIfInteger(String money) {
