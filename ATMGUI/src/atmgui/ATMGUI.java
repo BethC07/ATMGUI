@@ -10,7 +10,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ATMGUI extends JFrame {
+public class ATMGUI extends JPanel {
 
     // First, I initiate all the JFrame variables I need to make my GUI work
     // JFrame is the box that will appear
@@ -26,13 +26,16 @@ public class ATMGUI extends JFrame {
     public JRadioButton checking, savings;
     private final int WINDOW_WIDTH = 300;
     private final int WINDOW_HEIGHT = 180;
+    public String account;
+    Account checkingAccount = new Account("Checking");
+    Account savingsAccount = new Account("Savings");
     
     public ATMGUI() {
-        super("ATM Machine");
+        super(new BorderLayout());
         // Setting the width and hight of the box
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         // Exiting the program once "X" button on the window is pressed
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Calling the createPanel class to create the components in the box
         createPanel();
         // Adding the JPanel varible to the box
@@ -56,10 +59,27 @@ public class ATMGUI extends JFrame {
         // Setting the JRadioButton variables
         checking = new JRadioButton("Checking");
         checking.setActionCommand("Checking");
-        checking.addActionListener(this);
+        checking.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if("Checking".equals(ae.getActionCommand())) {
+                    account = "Checking";
+                }
+            }
+        });
         savings = new JRadioButton("Savings");
         savings.setActionCommand("Savings");
-        savings.addActionListener(this);
+        savings.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if("Savings".equals(ae.getActionCommand())) {
+                    account = "Savings";
+                }
+            }
+        });
+        
         
         // calculateWithdraw actionListener
         calculateWithdraw.addActionListener(new ActionListener() {
@@ -67,7 +87,8 @@ public class ATMGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String moneyString;
-                int moneyInteger;
+                double moneyInteger;
+                double balance;
 
                 moneyString = money.getText();
                 if(checkIfInteger(moneyString) == true) {
@@ -76,14 +97,25 @@ public class ATMGUI extends JFrame {
                     if(moneyInteger % 20 == 0)
                     {
                         try {
-                            int test =0;
-                            if(moneyInteger > test) {
-                            throw new InsufficientFunds("You do not have enough money to withdraw that amount.");
+                            if(account == "Checking") {
+                                balance = checkingAccount.Withdraw(account, moneyInteger);
+                                if (balance < moneyInteger) {
+                                   throw new InsufficientFunds("You do not have enough money to withdraw that amount."); 
+                                }
+                                else {
+                                JOptionPane.showMessageDialog(null, "Withdraw was successful.");
+                                }
                             }
-                            else {
-                            JOptionPane.showMessageDialog(null, "Withdraw was successful.");
+                            else if(account == "Savings") {
+                                balance = savingsAccount.Withdraw(account, moneyInteger);
+                                if (balance < moneyInteger) {
+                                   throw new InsufficientFunds("You do not have enough money to withdraw that amount."); 
+                                }
+                                else {
+                                JOptionPane.showMessageDialog(null, "Withdraw was successful.");
+                                }
                             }
-
+                            
                         }
                         catch (InsufficientFunds ex) {
                             JOptionPane.showMessageDialog(null, ex);
@@ -110,7 +142,7 @@ public class ATMGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String moneyString;
-                int moneyInteger;
+                double moneyInteger;
 
                 moneyString = money.getText();
                 if(checkIfInteger(moneyString) == true) {
@@ -129,7 +161,7 @@ public class ATMGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String moneyString;
-                int moneyInteger;
+                double moneyInteger;
 
                 moneyString = money.getText();
                 if(checkIfInteger(moneyString) == true) {
@@ -180,10 +212,12 @@ public class ATMGUI extends JFrame {
 
  public static void main(String[] args) {
      
-    Account checkingAccount = new Account("account");
-    Account savingsAccount = new Account("account");
+    /*Account checkingAccount = new Account("Checking");
+    Account savingsAccount = new Account("Savings");*/
     
     new ATMGUI();
      
  }
 }
+
+
